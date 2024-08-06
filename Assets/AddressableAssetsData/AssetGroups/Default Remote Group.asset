@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Remote Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Remote Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: aa3ad1590b8b24af5bbda691cf6fde24
+  m_SerializeEntries:
+  - m_GUID: 9e39f8371eb064375bd231d5099bfc2b
+    m_Address: GameHome
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4c66289855a74ae2b9f8a599e1adeee
+    m_Address: GameEntry
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67211c6ab93444ea993c582c750ac249
+    m_Address: Android
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a33e219e48e00463ba5b4be61a9b2565
+    m_Address: Android
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7248f2bbe96c4f6ab230345e5c645f2
+    m_Address: PatchEntryConfig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a81ad0b1b3fac455fa6437b495ad79a4
+    m_Address: Resource
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6560a915ef98420e9faacc1c7438823
+    m_Address: GameEntry
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 81e0d027f12d7436a8a0da8561098eb8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: c3e3dacac05b44bbfbdec1c4218a2b68, type: 2}
+    - {fileID: 11400000, guid: 8e33ec78cf9524692ad20ec4fc6b59ae, type: 2}

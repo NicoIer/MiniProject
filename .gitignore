@@ -107,3 +107,9 @@ Audio/.cache/**
 
 HybridCLRData/
 
+Assets/TextMesh Pro/Examples & Extras~
+Assets/TextMesh Pro/Examples & Extras~.meta
+
+
+# assetbundle build output
+ServerData/
