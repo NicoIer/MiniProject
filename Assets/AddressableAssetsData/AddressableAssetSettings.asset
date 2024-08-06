@@ -38,7 +38,7 @@ MonoBehaviour:
     m_Id: cbfa231776dde4334bd3e89c9bca5fb3
   m_RemoteCatalogLoadPath:
     m_Id: 5f0cc7798dffe4f2e93341fdc5dbb3d0
-  m_ContentStateBuildPathProfileVariableName: <default settings path>
+  m_ContentStateBuildPathProfileVariableName: Remote.BuildPath
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
@@ -88,6 +88,8 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - hybridclr_aot
+    - hybridclr_dll
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 9a916f811604d441ea4e37c3ddbeb443, type: 2}
