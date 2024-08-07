@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,7 @@ namespace Framework
 {
     public class PatchEntry : MonoSingleton<PatchEntry>, IOnlyPlayingModelSingleton
     {
-        [SerializeField] private AssetLabelReference hybridClrDllLabelReference;
-        [SerializeField] private AssetLabelReference hybridClrAotMetaLabelReference;
+        [SerializeField] private string configPath = "Resource/Config/PatchEntryConfig.asset";
         [SerializeField] private AssetReference gameEntryReference;
 
         [SerializeField] private Button retryButton;
@@ -36,8 +36,18 @@ namespace Framework
         private async void StartEnterGame()
         {
             enterGameButton.gameObject.SetActive(false);
+
+            // Load PatchEntryConfig
+            PatchEntryConfig config = await Addressables.LoadAssetAsync<PatchEntryConfig>(configPath);
+
             /*Load MetaData*/
-            var aotMetaAssets = await Addressables.LoadAssetsAsync<TextAsset>(hybridClrAotMetaLabelReference, null);
+            List<TextAsset> aotMetaAssets = new List<TextAsset>();
+            foreach (var reference in config.hybridClrAotMetaReferences)
+            {
+                TextAsset asset = await reference.LoadAssetAsync<TextAsset>();
+                aotMetaAssets.Add(asset);
+            }
+
             foreach (var metaAsset in aotMetaAssets)
             {
                 LoadImageErrorCode errorCode =
@@ -45,10 +55,21 @@ namespace Framework
                 Debug.Log($"Load AOT META [{metaAsset.name}]: {errorCode}");
             }
 
-            Addressables.Release(aotMetaAssets);
+            foreach (var metaAsset in aotMetaAssets)
+            {
+                Addressables.Release(metaAsset);
+            }
+
             /*Load DLL*/
 
-            var dllAssets = await Addressables.LoadAssetsAsync<TextAsset>(hybridClrDllLabelReference, null);
+            List<TextAsset> dllAssets = new List<TextAsset>();
+
+            foreach (var reference in config.hybridClrDllReferences)
+            {
+                TextAsset asset = await reference.LoadAssetAsync<TextAsset>();
+                dllAssets.Add(asset);
+            }
+
             foreach (var dllAsset in dllAssets)
             {
 #if !UNITY_EDITOR
@@ -57,37 +78,42 @@ namespace Framework
                 Debug.Log($"Load DLL: {dllAsset.name}");
             }
 
-            Addressables.Release(dllAssets);
-            /*Enter Game*/ 
+            foreach (var dllAsset in dllAssets)
+            {
+                Addressables.Release(dllAsset);
+            }
+
+            Addressables.Release(config);
+
+            /*Enter Game*/
             gameEntryReference.LoadSceneAsync();
         }
 
         private async void StartUpdate()
         {
-            enterGameButton.gameObject.SetActive(false);
             retryButton.gameObject.SetActive(false);
             progressText.text = "";
             contentText.text = "";
             versionText.text = $"{Application.version}";
+            enterGameButton.gameObject.SetActive(false);
             await AddressableUpdate();
+            enterGameButton.gameObject.SetActive(true);
         }
 
 
         private async UniTask AddressableUpdate()
         {
-            enterGameButton.gameObject.SetActive(false);
             List<object> keys = new List<object>();
             await Addressables.InitializeAsync(true).Task;
             /*更新CATALOG*/
-            var checkHandle = Addressables.CheckForCatalogUpdates();
-            var catalogList = await checkHandle.Task;
+            var catalogList = await Addressables.CheckForCatalogUpdates();
 
-            if (checkHandle.Status != AsyncOperationStatus.Succeeded)
-            {
-                retryButton.gameObject.SetActive(true);
-                Debug.Log("CheckForCatalogUpdates failed");
-                return;
-            }
+            // if (checkHandle.Status != AsyncOperationStatus.Succeeded)
+            // {
+            //     retryButton.gameObject.SetActive(true);
+            //     Debug.Log("CheckForCatalogUpdates failed");
+            //     return;
+            // }
 
             if (catalogList.Count <= 0)
             {
@@ -100,47 +126,56 @@ namespace Framework
                 Debug.Log($"catalog: {catalog}");
             }
 
-            contentText.text = "发现更新"; //"Found updates";
-
-            Debug.Log("Start update catalog");
-            var catalogResourceLocators = await Addressables.UpdateCatalogs(catalogList, true).Task;
-
-
-            foreach (var catalogResource in catalogResourceLocators)
+            try
             {
-                Debug.Log($"catalogResource.LocatorId: {catalogResource.LocatorId}");
-                keys.AddRange(catalogResource.Keys);
+                contentText.text = "发现更新"; //"Found updates";
+
+                Debug.Log("Start update catalog");
+                var catalogResourceLocators = await Addressables.UpdateCatalogs(catalogList, true).Task;
+
+
+                foreach (var catalogResource in catalogResourceLocators)
+                {
+                    Debug.Log($"catalogResource.LocatorId: {catalogResource.LocatorId}");
+                    keys.AddRange(catalogResource.Keys);
+                }
+
+                Debug.Log("Update catalog done");
+                /*根据CATALOG预先下载好所有资源*/
+                var downloadSize = await Addressables.GetDownloadSizeAsync((IEnumerable)keys).Task;
+                var downloadSizeMb = downloadSize / 1024 / 1024; // mb
+                Debug.Log($"downloadSize: {downloadSizeMb}MB");
+                contentText.text = $"下载大小: {downloadSizeMb}MB"; //"Download size: {downloadSizeMb}MB";
+
+                if (downloadSize <= 0)
+                {
+                    Debug.Log("No updates found");
+                    return;
+                }
+
+                var downloadHandle =
+                    Addressables.DownloadDependenciesAsync((IEnumerable)keys, Addressables.MergeMode.Union);
+
+                var status = downloadHandle.GetDownloadStatus();
+                while (!downloadHandle.IsDone &&
+                       downloadHandle.Status != AsyncOperationStatus.Succeeded &&
+                       downloadHandle.Status != AsyncOperationStatus.Failed)
+                {
+                    contentText.text =
+                        $"下载中{status.DownloadedBytes}/{status.TotalBytes}";
+                    progressText.text = $"{downloadHandle.PercentComplete * 100}%";
+                    await UniTask.DelayFrame(1);
+                }
+                contentText.text = "下载完成"; //"Download complete";
+                progressText.text = "100%";
+
+                Addressables.Release(downloadHandle);
             }
-
-            Debug.Log("Update catalog done");
-            /*根据CATALOG预先下载好所有资源*/
-            var downloadSize = await Addressables.GetDownloadSizeAsync((IEnumerable)keys).Task;
-            var downloadSizeMb = downloadSize / 1024 / 1024; // mb
-            Debug.Log($"downloadSize: {downloadSizeMb}MB");
-            contentText.text = $"下载大小: {downloadSizeMb}MB"; //"Download size: {downloadSizeMb}MB";
-
-            if (downloadSize <= 0)
+            catch (Exception e)
             {
-                Debug.Log("No updates found");
-                return;
+                retryButton.gameObject.SetActive(true);
+                Debug.LogError(e);
             }
-
-            var downloadHandle =
-                Addressables.DownloadDependenciesAsync((IEnumerable)keys, Addressables.MergeMode.Union);
-
-            var status = downloadHandle.GetDownloadStatus();
-            while (!downloadHandle.IsDone &&
-                   downloadHandle.Status != AsyncOperationStatus.Succeeded &&
-                   downloadHandle.Status != AsyncOperationStatus.Failed)
-            {
-                contentText.text =
-                    $"下载中{status.DownloadedBytes}/{status.TotalBytes}";
-                progressText.text = $"{downloadHandle.PercentComplete * 100}%";
-            }
-
-            Addressables.Release(downloadHandle);
-
-            enterGameButton.gameObject.SetActive(true);
         }
     }
 }

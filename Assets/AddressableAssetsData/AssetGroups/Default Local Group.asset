@@ -18,7 +18,7 @@ MonoBehaviour:
   m_GUID: 0bce32258e8544eac9a65a65104666fe
   m_SerializeEntries:
   - m_GUID: d720f583102e44e43b7d1212a223ebb7
-    m_Address: Assets/Resource/Font
+    m_Address: Font
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

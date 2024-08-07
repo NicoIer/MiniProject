@@ -18,12 +18,37 @@ MonoBehaviour:
   m_GUID: aa3ad1590b8b24af5bbda691cf6fde24
   m_SerializeEntries:
   - m_GUID: 9e39f8371eb064375bd231d5099bfc2b
-    m_Address: Assets/Scenes/GameHome.unity
+    m_Address: GameHome
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e4c66289855a74ae2b9f8a599e1adeee
-    m_Address: Assets/Scenes/GameEntry.unity
+    m_Address: GameEntry
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67211c6ab93444ea993c582c750ac249
+    m_Address: Android
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a33e219e48e00463ba5b4be61a9b2565
+    m_Address: Android
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7248f2bbe96c4f6ab230345e5c645f2
+    m_Address: PatchEntryConfig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a81ad0b1b3fac455fa6437b495ad79a4
+    m_Address: Resource
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6560a915ef98420e9faacc1c7438823
+    m_Address: GameEntry
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
