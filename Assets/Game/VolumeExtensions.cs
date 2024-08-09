@@ -7,7 +7,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Game
+namespace UnityToolkit
 {
     public class ExperimentalAttribute : Attribute
     {
@@ -15,46 +15,6 @@ namespace Game
 
     public static class VolumeExtensions
     {
-        // /// <summary>
-        // /// Reload VolumeManager
-        // /// Base on UniversalRP 14.0.9
-        // /// Using Reflection to access private fields and methods
-        // /// Expensive operation, use it only when necessary
-        // /// </summary>
-        // /// <param name="volumeManager"></param>
-        // [Experimental]
-        // public static void Reload(this VolumeManager volumeManager)
-        // {
-        //     // 相当于重新走一遍构造函数 加载热更代码后 重新加载VolumeManager 这样就可以扫到热更代码中的VolumeComponent
-        //     MethodInfo reloadBaseTypesMethodInfo = typeof(VolumeManager).GetMethod("ReloadBaseTypes",
-        //         BindingFlags.Instance | BindingFlags.NonPublic);
-        //     if (reloadBaseTypesMethodInfo == null)
-        //     {
-        //         Debug.LogError($"{nameof(VolumeManager)}.ReloadBaseTypes not found. check your UniversalRP version");
-        //         return;
-        //     }
-        //     reloadBaseTypesMethodInfo.Invoke(volumeManager, null); 
-        //     // volumeManager.ReloadBaseTypes();
-        //
-        //
-        //     VolumeStack stack = volumeManager.CreateStack();
-        //
-        //
-        //     FieldInfo stackFieldInfo = typeof(VolumeManager).GetField("m_DefaultStack",
-        //         BindingFlags.Instance | BindingFlags.NonPublic);
-        //     if (stackFieldInfo == null)
-        //     {
-        //         Debug.LogError($"{nameof(VolumeManager)}.m_DefaultStack not found. check your UniversalRP version");
-        //         return;
-        //     }
-        //
-        //     stackFieldInfo.SetValue(volumeManager, stack); 
-        //     // volumeManager.m_DefaultStack = stack; 
-        //     
-        //     volumeManager.stack = stack;
-        // }
-
-
         /// <summary>
         /// Add a VolumeComponent to VolumeManager
         /// Base on UniversalRP 14.0.9
