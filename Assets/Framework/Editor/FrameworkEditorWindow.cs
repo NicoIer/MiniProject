@@ -16,7 +16,7 @@ namespace Framework.Editor
         {
             //HybridCLRData/HotUpdateDlls/Android/XXX.dll
             string sourceDir = SettingsUtil.GetHotUpdateDllsOutputDirByTarget(EditorUserBuildSettings.activeBuildTarget);
-            string targetDir = $"Assets/Resouce/HotUpdateDlls/{EditorUserBuildSettings.activeBuildTarget}/";
+            string targetDir = $"Assets/Resource/HotUpdateDlls/{EditorUserBuildSettings.activeBuildTarget}/";
             for (var i = 0; i < SettingsUtil.HybridCLRSettings.hotUpdateAssemblyDefinitions.Length; i++)
             {
                 var assemblyDefinition = SettingsUtil.HybridCLRSettings.hotUpdateAssemblyDefinitions[i];
